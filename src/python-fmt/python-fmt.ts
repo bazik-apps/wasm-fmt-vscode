@@ -1,20 +1,20 @@
-import { initSync as yaml_init, format as yamlfmt } from "@wasm-fmt/yamlfmt";
-import sql_wasm from "@wasm-fmt/yamlfmt/yamlfmt_bg.wasm";
+import { format, initSync } from "@wasm-fmt/ruff_fmt";
+import ruff_wasm from "@wasm-fmt/ruff_fmt/ruff_fmt_bg.wasm";
 import type { ExtensionContext } from "vscode";
 import { Range, TextEdit, Uri, languages, workspace } from "vscode";
 import { Logger } from "../logger.ts";
 
-const logger = new Logger("yamlfmt");
+const logger = new Logger("python-format");
 
-export default async function init(context: ExtensionContext) {
-	const wasm_uri = Uri.joinPath(context.extensionUri, sql_wasm);
+export async function pythonFormatInit(context: ExtensionContext) {
+	const wasm_uri = Uri.joinPath(context.extensionUri, ruff_wasm);
 
 	const bits = await workspace.fs.readFile(wasm_uri);
-	yaml_init(bits);
+	initSync(bits);
 }
 
-export function formattingSubscription() {
-	return languages.registerDocumentFormattingEditProvider(["yaml", "github-actions-workflow"], {
+export function pythonFormatSubscription() {
+	return languages.registerDocumentFormattingEditProvider("python", {
 		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();
 
@@ -28,7 +28,7 @@ export function formattingSubscription() {
 			);
 
 			try {
-				const formatted = yamlfmt(text, document.fileName, {
+				const formatted = format(text, document.fileName, {
 					indent_style,
 					indent_width,
 				});

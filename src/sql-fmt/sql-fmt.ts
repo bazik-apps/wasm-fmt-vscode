@@ -1,4 +1,4 @@
-import { format as sql_fmt, initSync as sql_init } from "@wasm-fmt/sql_fmt";
+import { format, initSync } from "@wasm-fmt/sql_fmt";
 import sql_wasm from "@wasm-fmt/sql_fmt/sql_fmt_bg.wasm";
 import type { ExtensionContext } from "vscode";
 import { Range, TextEdit, Uri, languages, workspace } from "vscode";
@@ -6,14 +6,14 @@ import { Logger } from "../logger.ts";
 
 const logger = new Logger("sql-fmt");
 
-export default async function init(context: ExtensionContext) {
+export async function sqlFormatInit(context: ExtensionContext) {
 	const wasm_uri = Uri.joinPath(context.extensionUri, sql_wasm);
 
 	const bits = await workspace.fs.readFile(wasm_uri);
-	sql_init(bits);
+	initSync(bits);
 }
 
-export function formattingSubscription() {
+export function sqlFormatSubscription() {
 	return languages.registerDocumentFormattingEditProvider("sql", {
 		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();
@@ -28,7 +28,7 @@ export function formattingSubscription() {
 			);
 
 			try {
-				const formatted = sql_fmt(text, document.fileName, {
+				const formatted = format(text, document.fileName, {
 					indent_style,
 					indent_width,
 				});

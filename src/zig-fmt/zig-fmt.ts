@@ -1,4 +1,4 @@
-import zig_init, { format as zig_fmt } from "@wasm-fmt/zig_fmt";
+import zig_init, { format } from "@wasm-fmt/zig_fmt";
 import zig_wasm from "@wasm-fmt/zig_fmt/zig_fmt.wasm";
 import type { ExtensionContext } from "vscode";
 import { Range, TextEdit, Uri, languages, workspace } from "vscode";
@@ -6,14 +6,14 @@ import { Logger } from "../logger.ts";
 
 const logger = new Logger("zig-fmt");
 
-export default async function init(context: ExtensionContext) {
+export async function zigFormatInit(context: ExtensionContext) {
 	const wasm_uri = Uri.joinPath(context.extensionUri, zig_wasm);
 
 	const bits = await workspace.fs.readFile(wasm_uri);
 	await zig_init(bits);
 }
 
-export function formattingSubscription() {
+export function zigFormatSubscription() {
 	return languages.registerDocumentFormattingEditProvider(
 		// TODO: ZON
 		["zig", { pattern: "**/*.zig", scheme: "file" }],
@@ -24,7 +24,7 @@ export function formattingSubscription() {
 				logger.log(document.languageId, document.fileName);
 
 				try {
-					const formatted = zig_fmt(text);
+					const formatted = format(text);
 
 					const range = document.validateRange(
 						new Range(document.positionAt(0), document.positionAt(text.length)),

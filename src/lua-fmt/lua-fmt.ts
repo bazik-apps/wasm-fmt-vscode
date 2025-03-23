@@ -1,20 +1,20 @@
-import { format as ruff_fmt, initSync as ruff_init } from "@wasm-fmt/ruff_fmt";
-import ruff_wasm from "@wasm-fmt/ruff_fmt/ruff_fmt_bg.wasm";
+import { format, initSync } from "@wasm-fmt/lua_fmt";
+import lua_wasm from "@wasm-fmt/lua_fmt/lua_fmt_bg.wasm";
 import type { ExtensionContext } from "vscode";
 import { Range, TextEdit, Uri, languages, workspace } from "vscode";
 import { Logger } from "../logger.ts";
 
-const logger = new Logger("ruff-format");
+const logger = new Logger("lua-fmt");
 
-export default async function init(context: ExtensionContext) {
-	const wasm_uri = Uri.joinPath(context.extensionUri, ruff_wasm);
+export async function luaFormatInit(context: ExtensionContext) {
+	const wasm_uri = Uri.joinPath(context.extensionUri, lua_wasm);
 
 	const bits = await workspace.fs.readFile(wasm_uri);
-	ruff_init(bits);
+	initSync(bits);
 }
 
-export function formattingSubscription() {
-	return languages.registerDocumentFormattingEditProvider("python", {
+export function luaFormatSubscription() {
+	return languages.registerDocumentFormattingEditProvider("lua", {
 		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();
 
@@ -28,7 +28,7 @@ export function formattingSubscription() {
 			);
 
 			try {
-				const formatted = ruff_fmt(text, document.fileName, {
+				const formatted = format(text, document.fileName, {
 					indent_style,
 					indent_width,
 				});

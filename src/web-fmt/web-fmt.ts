@@ -3,7 +3,7 @@ import {
 	format as format_markup,
 	format_script,
 	format_style,
-	initSync as web_init,
+	initSync,
 } from "@wasm-fmt/web_fmt";
 import web_wasm from "@wasm-fmt/web_fmt/web_fmt_bg.wasm";
 import type { ExtensionContext } from "vscode";
@@ -15,14 +15,14 @@ const style_logger = new Logger("web_fmt:style");
 const markup_logger = new Logger("web_fmt:markup");
 const json_logger = new Logger("web_fmt:json");
 
-export default async function init(context: ExtensionContext) {
+export async function webFormatInit(context: ExtensionContext) {
 	const wasm_uri = Uri.joinPath(context.extensionUri, web_wasm);
 
 	const bits = await workspace.fs.readFile(wasm_uri);
-	web_init(bits);
+	initSync(bits);
 }
 
-export function formattingSubscription() {
+export function webFormatSubscription() {
 	const script_sub = languages.registerDocumentFormattingEditProvider(
 		["javascript", "javascriptreact", "typescript", "typescriptreact"],
 		{
@@ -57,6 +57,7 @@ export function formattingSubscription() {
 			},
 		},
 	);
+
 	const style_sub = languages.registerDocumentFormattingEditProvider(
 		["css", "less", "sass", "scss"],
 		{
@@ -91,6 +92,7 @@ export function formattingSubscription() {
 			},
 		},
 	);
+
 	const markup_sub = languages.registerDocumentFormattingEditProvider(
 		[
 			"astro",
@@ -137,6 +139,7 @@ export function formattingSubscription() {
 			},
 		},
 	);
+
 	const json_sub = languages.registerDocumentFormattingEditProvider(["json", "jsonc"], {
 		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();

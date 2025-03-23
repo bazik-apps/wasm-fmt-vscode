@@ -1,20 +1,20 @@
-import { format as lua_fmt, initSync as lua_init } from "@wasm-fmt/lua_fmt";
-import lua_wasm from "@wasm-fmt/lua_fmt/lua_fmt_bg.wasm";
+import { format, initSync } from "@wasm-fmt/yamlfmt";
+import sql_wasm from "@wasm-fmt/yamlfmt/yamlfmt_bg.wasm";
 import type { ExtensionContext } from "vscode";
 import { Range, TextEdit, Uri, languages, workspace } from "vscode";
 import { Logger } from "../logger.ts";
 
-const logger = new Logger("lua-fmt");
+const logger = new Logger("yamlfmt");
 
-export default async function init(context: ExtensionContext) {
-	const wasm_uri = Uri.joinPath(context.extensionUri, lua_wasm);
+export async function yamlFormatInit(context: ExtensionContext) {
+	const wasm_uri = Uri.joinPath(context.extensionUri, sql_wasm);
 
 	const bits = await workspace.fs.readFile(wasm_uri);
-	lua_init(bits);
+	initSync(bits);
 }
 
-export function formattingSubscription() {
-	return languages.registerDocumentFormattingEditProvider("lua", {
+export function yamlFormatSubscription() {
+	return languages.registerDocumentFormattingEditProvider(["yaml", "github-actions-workflow"], {
 		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();
 
@@ -28,7 +28,7 @@ export function formattingSubscription() {
 			);
 
 			try {
-				const formatted = lua_fmt(text, document.fileName, {
+				const formatted = format(text, document.fileName, {
 					indent_style,
 					indent_width,
 				});
