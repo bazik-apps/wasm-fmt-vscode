@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as esbuild from "esbuild";
+import { build, context } from "esbuild";
 import process from "node:process";
 
 /**
@@ -21,7 +21,7 @@ const options = {
 };
 
 if (process.argv.includes("--watch")) {
-	const ctxt = await esbuild.context(options);
+	const ctxt = await context(options);
 	ctxt.watch();
 	console.log("Watching for changes...");
 
@@ -35,5 +35,5 @@ if (process.argv.includes("--watch")) {
 		options.minify = true;
 	}
 
-	await esbuild.build(options);
+	await build(options);
 }

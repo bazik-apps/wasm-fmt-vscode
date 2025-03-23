@@ -1,10 +1,11 @@
-import vscode = require("vscode");
 import clang_init, {
 	format as clang_format,
 	format_byte_range as clang_format_range,
 } from "@wasm-fmt/clang-format";
 import clang_wasm from "@wasm-fmt/clang-format/clang-format.wasm";
-import { Logger } from "../logger";
+import type { ExtensionContext, FormattingOptions, ProviderResult, TextDocument } from "vscode";
+import { Range, TextEdit, Uri, languages, workspace } from "vscode";
+import { Logger } from "../logger.ts";
 
 const logger = new Logger("clang-format");
 const encoder = new TextEncoder();
@@ -13,15 +14,15 @@ function bytelength(str: string) {
 	return encoder.encode(str).byteLength;
 }
 
-export default async function init(context: vscode.ExtensionContext) {
-	const wasm_uri = vscode.Uri.joinPath(context.extensionUri, clang_wasm);
+export default async function init(context: ExtensionContext) {
+	const wasm_uri = Uri.joinPath(context.extensionUri, clang_wasm);
 
-	const bits = await vscode.workspace.fs.readFile(wasm_uri);
+	const bits = await workspace.fs.readFile(wasm_uri);
 	await clang_init(bits);
 }
 
 export function formattingSubscription() {
-	return vscode.languages.registerDocumentRangeFormattingEditProvider(
+	return languages.registerDocumentRangeFormattingEditProvider(
 		[
 			"c",
 			"cpp",
@@ -37,18 +38,16 @@ export function formattingSubscription() {
 		],
 		{
 			provideDocumentRangeFormattingEdits(
-				document: vscode.TextDocument,
-				range: vscode.Range,
-				options: vscode.FormattingOptions,
-			): vscode.ProviderResult<vscode.TextEdit[]> {
+				document: TextDocument,
+				range: Range,
+				options: FormattingOptions,
+			): ProviderResult<TextEdit[]> {
 				const text = document.getText();
 
 				const IndentWidth = options.tabSize;
 				const TabWidth = options.tabSize;
 
-				const UseTab = options.insertSpaces
-					? "Never"
-					: "ForIndentation";
+				const UseTab = options.insertSpaces ? "Never" : "ForIndentation";
 
 				const style = JSON.stringify({
 					...defaultConfig(document.languageId),
@@ -62,27 +61,17 @@ export function formattingSubscription() {
 						? languageMap[document.languageId]
 						: document.fileName;
 
-					const full_range = new vscode.Range(
-						document.positionAt(0),
-						document.positionAt(text.length),
-					);
+					const full_range = new Range(document.positionAt(0), document.positionAt(text.length));
 
 					if (range.isEmpty || range.contains(full_range)) {
-						logger.log(
-							document.languageId,
-							document.fileName,
-							style,
-						);
+						logger.log(document.languageId, document.fileName, style);
 
 						const formatted = clang_format(text, filename, style);
 
-						return [vscode.TextEdit.replace(full_range, formatted)];
+						return [TextEdit.replace(full_range, formatted)];
 					}
 
-					const [start, end] = [
-						document.offsetAt(range.start),
-						document.offsetAt(range.end),
-					];
+					const [start, end] = [document.offsetAt(range.start), document.offsetAt(range.end)];
 
 					const byte_start = bytelength(text.slice(0, start));
 					const byte_length = bytelength(text.slice(start, end));
@@ -94,14 +83,9 @@ export function formattingSubscription() {
 						style,
 					);
 
-					const formatted = clang_format_range(
-						text,
-						[[byte_start, byte_length]],
-						filename,
-						style,
-					);
+					const formatted = clang_format_range(text, [[byte_start, byte_length]], filename, style);
 
-					return [vscode.TextEdit.replace(full_range, formatted)];
+					return [TextEdit.replace(full_range, formatted)];
 				} catch (e) {
 					logger.error(e);
 					return [];
@@ -122,7 +106,7 @@ const languageMap: Record<string, string> = {
 };
 
 function defaultConfig(languageId: string) {
-	const config: Record<string, any> = { BasedOnStyle: "Chromium" };
+	const config: Record<string, unknown> = { BasedOnStyle: "Chromium" };
 
 	switch (languageId) {
 		case "csharp": {
@@ -142,4 +126,8 @@ function defaultConfig(languageId: string) {
 	}
 
 	return config;
+}
+
+function getConfig() {
+	const config: Record<string, unknown> = { BasedOnStyle: "Chromium" };
 }

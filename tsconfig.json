@@ -1,14 +1,19 @@
 {
+	"extends": [
+		"@tsconfig/node-lts/tsconfig.json",
+		"@tsconfig/strictest/tsconfig.json",
+		"@tsconfig/node-ts/tsconfig.json"
+	],
 	"include": [
 		"src"
 	],
 	"compilerOptions": {
-		"module": "commonjs",
-		"target": "ES2020",
+		"allowImportingTsExtensions": true,
 		"lib": [
 			"ES2020",
 			"WebWorker"
 		],
+		"noPropertyAccessFromIndexSignature": false,
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true,

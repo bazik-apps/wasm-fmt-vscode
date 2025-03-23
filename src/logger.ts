@@ -1,29 +1,32 @@
-import vscode = require("vscode");
+import { window } from "vscode";
 
 export class Logger {
-	private static readonly output =
-		vscode.window.createOutputChannel("wasm-fmt");
+	private static readonly output = window.createOutputChannel("wasm-fmt");
 
-	constructor(private scope: string) {}
+	private scope: string;
 
-	public log(...args: any[]) {
+	constructor(scope: string) {
+		this.scope = scope;
+	}
+
+	log(...args: unknown[]) {
 		Logger.output.appendLine(`[log][${this.scope}] ${args.join(" ")}`);
 	}
 
-	public error(...args: any[]) {
+	error(...args: unknown[]) {
 		Logger.output.appendLine(`[error][${this.scope}] ${args.join(" ")}`);
 		Logger.output.show();
 	}
 
-	public warn(...args: any[]) {
+	warn(...args: unknown[]) {
 		Logger.output.appendLine(`[warn][${this.scope}] ${args.join(" ")}`);
 	}
 
-	public info(...args: any[]) {
+	info(...args: unknown[]) {
 		Logger.output.appendLine(`[info][${this.scope}] ${args.join(" ")}`);
 	}
 
-	public debug(...args: any[]) {
+	debug(...args: unknown[]) {
 		Logger.output.appendLine(`[debug][${this.scope}] ${args.join(" ")}`);
 	}
 }

@@ -28,16 +28,19 @@
 		"watch": "./esbuild.mjs --watch"
 	},
 	"devDependencies": {
-		"@types/node": "^22.10.1",
-		"@types/vscode": "^1.88.0",
-		"esbuild": "^0.24.0"
+		"@tsconfig/node-lts": "^22.0.1",
+		"@tsconfig/node-ts": "^23.6.0",
+		"@tsconfig/strictest": "^2.0.5",
+		"@types/node": "^22.13.11",
+		"@types/vscode": "^1.98.0",
+		"esbuild": "^0.25.1"
 	},
 	"dependencies": {
-		"@wasm-fmt/clang-format": "^19.1.5",
+		"@wasm-fmt/clang-format": "^19.1.7",
 		"@wasm-fmt/dart_fmt": "^0.2.0",
 		"@wasm-fmt/gofmt": "^0.4.9",
 		"@wasm-fmt/lua_fmt": "^0.1.0",
-		"@wasm-fmt/ruff_fmt": "^0.8.1",
+		"@wasm-fmt/ruff_fmt": "^0.9.7",
 		"@wasm-fmt/sql_fmt": "^0.1.0",
 		"@wasm-fmt/web_fmt": "^0.1.13",
 		"@wasm-fmt/yamlfmt": "^0.0.3",
@@ -49,5 +52,22 @@
 		"web",
 		"wasm",
 		"browser"
-	]
+	],
+	"contributes": {
+		"configuration": {
+			"properties": {
+				"clang-format.style": {
+					"type": "string",
+					"default": "file",
+					"description": "clang-format style.(-style=value, value can be file, LLVM, Google, Chromium, Mozilla, WebKit or json configure)"
+				},
+				"clang-format.fallbackStyle": {
+					"type": "string",
+					"default": "LLVM",
+					"description": "clang-format fallback style.(-fallback-style=value, value can be none, LLVM, Google, Chromium, Mozilla, WebKit)"
+				}
+			}
+		}
+	},
+	"type": "module"
 }

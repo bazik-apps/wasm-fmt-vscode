@@ -1,19 +1,20 @@
-import vscode = require("vscode");
 import { format as lua_fmt, initSync as lua_init } from "@wasm-fmt/lua_fmt";
 import lua_wasm from "@wasm-fmt/lua_fmt/lua_fmt_bg.wasm";
-import { Logger } from "../logger";
+import type { ExtensionContext } from "vscode";
+import { Range, TextEdit, Uri, languages, workspace } from "vscode";
+import { Logger } from "../logger.ts";
 
 const logger = new Logger("lua-fmt");
 
-export default async function init(context: vscode.ExtensionContext) {
-	const wasm_uri = vscode.Uri.joinPath(context.extensionUri, lua_wasm);
+export default async function init(context: ExtensionContext) {
+	const wasm_uri = Uri.joinPath(context.extensionUri, lua_wasm);
 
-	const bits = await vscode.workspace.fs.readFile(wasm_uri);
+	const bits = await workspace.fs.readFile(wasm_uri);
 	lua_init(bits);
 }
 
 export function formattingSubscription() {
-	return vscode.languages.registerDocumentFormattingEditProvider("lua", {
+	return languages.registerDocumentFormattingEditProvider("lua", {
 		provideDocumentFormattingEdits(document, options, token) {
 			const text = document.getText();
 
@@ -33,12 +34,9 @@ export function formattingSubscription() {
 				});
 
 				const range = document.validateRange(
-					new vscode.Range(
-						document.positionAt(0),
-						document.positionAt(text.length),
-					),
+					new Range(document.positionAt(0), document.positionAt(text.length)),
 				);
-				return [vscode.TextEdit.replace(range, formatted)];
+				return [TextEdit.replace(range, formatted)];
 			} catch (error) {
 				logger.error(error);
 				return [];
