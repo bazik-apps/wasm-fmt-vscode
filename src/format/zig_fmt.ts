@@ -18,7 +18,7 @@ export function formattingSubscription() {
 		// TODO: ZON
 		["zig", { pattern: "**/*.zig", scheme: "file" }],
 		{
-			provideDocumentFormattingEdits(document, options, token) {
+			provideDocumentFormattingEdits(document) {
 				const text = document.getText();
 
 				logger.log(document.languageId, document.fileName);

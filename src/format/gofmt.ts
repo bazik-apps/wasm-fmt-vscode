@@ -15,7 +15,7 @@ export default async function init(context: ExtensionContext) {
 
 export function formattingSubscription() {
 	return languages.registerDocumentFormattingEditProvider("go", {
-		provideDocumentFormattingEdits(document, options, token) {
+		provideDocumentFormattingEdits(document) {
 			const text = document.getText();
 
 			logger.log(document.languageId, document.fileName);

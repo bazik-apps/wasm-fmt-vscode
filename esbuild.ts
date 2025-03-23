@@ -1,38 +1,35 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-transform-types
+
+import type { BuildOptions } from "esbuild";
 import { build, context } from "esbuild";
 import process from "node:process";
 
-/**
- * @typedef {import("esbuild").BuildOptions} BuildOptions
- */
-
-/**
- * @type BuildOptions
- */
-const options = {
+const options: BuildOptions = {
+	bundle: true,
 	entryPoints: ["src/extension.ts"],
+	external: ["vscode"],
+	format: "esm",
+	loader: { ".wasm": "file" },
 	outdir: "out",
 	publicPath: "out",
-	bundle: true,
+	sourcemap: "inline",
 	target: "es2020",
-	loader: { ".wasm": "file" },
-	external: ["vscode"],
-	format: "cjs",
 };
 
 if (process.argv.includes("--watch")) {
-	const ctxt = await context(options);
-	ctxt.watch();
+	const ctx = await context(options);
+	ctx.watch();
 	console.log("Watching for changes...");
 
 	process.on("SIGINT", () => {
-		ctxt.dispose();
+		ctx.dispose();
 		console.log("Stopped and cleaned up.");
 		process.exit(0);
 	});
 } else {
-	if (process.argv.includes("--minify")) {
+	if (process.argv.includes("--production")) {
 		options.minify = true;
+		options.sourcemap = false;
 	}
 
 	await build(options);

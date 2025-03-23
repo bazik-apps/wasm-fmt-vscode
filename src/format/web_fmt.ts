@@ -26,7 +26,7 @@ export function formattingSubscription() {
 	const script_sub = languages.registerDocumentFormattingEditProvider(
 		["javascript", "javascriptreact", "typescript", "typescriptreact"],
 		{
-			provideDocumentFormattingEdits(document, options, token) {
+			provideDocumentFormattingEdits(document, options) {
 				const text = document.getText();
 
 				const indent_style = options.insertSpaces ? "space" : "tab";
@@ -60,7 +60,7 @@ export function formattingSubscription() {
 	const style_sub = languages.registerDocumentFormattingEditProvider(
 		["css", "less", "sass", "scss"],
 		{
-			provideDocumentFormattingEdits(document, options, token) {
+			provideDocumentFormattingEdits(document, options) {
 				const text = document.getText();
 
 				const indent_style = options.insertSpaces ? "space" : "tab";
@@ -106,7 +106,7 @@ export function formattingSubscription() {
 			{ pattern: "**/*.twig", scheme: "file" },
 		],
 		{
-			provideDocumentFormattingEdits(document, options, token) {
+			provideDocumentFormattingEdits(document, options) {
 				const text = document.getText();
 
 				const indent_style = options.insertSpaces ? "space" : "tab";
@@ -138,7 +138,7 @@ export function formattingSubscription() {
 		},
 	);
 	const json_sub = languages.registerDocumentFormattingEditProvider(["json", "jsonc"], {
-		provideDocumentFormattingEdits(document, options, token) {
+		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();
 
 			const indent_style = options.insertSpaces ? "space" : "tab";

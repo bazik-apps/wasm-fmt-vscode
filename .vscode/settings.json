@@ -2,7 +2,9 @@
 {
 	"editor.defaultFormatter": "wasm-fmt.wasm-fmt",
 	"files.associations": {
-		"settings.json": "jsonc"
+		"launch.json": "jsonc",
+		"settings.json": "jsonc",
+		"tasks.json": "jsonc"
 	},
 	"files.exclude": {
 		"out": false // set this to true to hide the "out" folder with the compiled JS files

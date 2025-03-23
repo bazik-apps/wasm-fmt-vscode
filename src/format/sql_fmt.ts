@@ -15,7 +15,7 @@ export default async function init(context: ExtensionContext) {
 
 export function formattingSubscription() {
 	return languages.registerDocumentFormattingEditProvider("sql", {
-		provideDocumentFormattingEdits(document, options, token) {
+		provideDocumentFormattingEdits(document, options) {
 			const text = document.getText();
 
 			const indent_style = options.insertSpaces ? "space" : "tab";

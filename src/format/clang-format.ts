@@ -3,7 +3,7 @@ import clang_init, {
 	format_byte_range as clang_format_range,
 } from "@wasm-fmt/clang-format";
 import clang_wasm from "@wasm-fmt/clang-format/clang-format.wasm";
-import type { ExtensionContext, FormattingOptions, ProviderResult, TextDocument } from "vscode";
+import type { ExtensionContext, ProviderResult } from "vscode";
 import { Range, TextEdit, Uri, languages, workspace } from "vscode";
 import { Logger } from "../logger.ts";
 
@@ -37,11 +37,7 @@ export function formattingSubscription() {
 			},
 		],
 		{
-			provideDocumentRangeFormattingEdits(
-				document: TextDocument,
-				range: Range,
-				options: FormattingOptions,
-			): ProviderResult<TextEdit[]> {
+			provideDocumentRangeFormattingEdits(document, range, options): ProviderResult<TextEdit[]> {
 				const text = document.getText();
 
 				const IndentWidth = options.tabSize;
@@ -126,8 +122,4 @@ function defaultConfig(languageId: string) {
 	}
 
 	return config;
-}
-
-function getConfig() {
-	const config: Record<string, unknown> = { BasedOnStyle: "Chromium" };
 }
