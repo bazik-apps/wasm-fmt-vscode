@@ -46,8 +46,8 @@ importers:
         specifier: ^22.0.1
         version: 22.0.1
       '@tsconfig/node-ts':
-        specifier: ^23.6.0
-        version: 23.6.0
+        specifier: ^23.6.1
+        version: 23.6.1
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
@@ -55,8 +55,8 @@ importers:
         specifier: ^10.0.10
         version: 10.0.10
       '@types/node':
-        specifier: ^22.13.11
-        version: 22.13.11
+        specifier: ^22.13.12
+        version: 22.13.12
       '@types/vscode':
         specifier: ^1.98.0
         version: 1.98.0
@@ -281,8 +281,8 @@ packages:
   '@tsconfig/node-lts@22.0.1':
     resolution: {integrity: sha512-BwlbLiYurZKrj+Pa6etSE1jXmr3VEDdgJto1jEYKcpBVwZZSWVkCPyFEFYbHdIOaFMlSTtV206DYPlT109aqug==}
 
-  '@tsconfig/node-ts@23.6.0':
-    resolution: {integrity: sha512-xkDNA9OdfKpwaVGougAf3vX+E6JHFO0mW2/eiJ7Ef72K21hNvoMlrzf0F87lrip0km4E6a3WceuXqfiXB255iQ==}
+  '@tsconfig/node-ts@23.6.1':
+    resolution: {integrity: sha512-1E5cUp+S65pLKKI9VrGMQPWDHxOEq3dAGM2onG3fLeSRwWbylYFwhIjnzJikjSN7w2nCgwxmv8ifvUKDFkK38Q==}
 
   '@tsconfig/strictest@2.0.5':
     resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
@@ -290,8 +290,8 @@ packages:
   '@types/mocha@10.0.10':
     resolution: {integrity: sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==}
 
-  '@types/node@22.13.11':
-    resolution: {integrity: sha512-iEUCUJoU0i3VnrCmgoWCXttklWcvoCIx4jzcP22fioIVSdTmjgoEvmAO/QPw6TcS9k5FrNgn4w7q5lGOd1CT5g==}
+  '@types/node@22.13.12':
+    resolution: {integrity: sha512-ixiWrCSRi33uqBMRuICcKECW7rtgY43TbsHDpM2XK7lXispd48opW+0IXrBVxv9NMhaz/Ue9kyj6r3NTVyXm8A==}
 
   '@types/vscode@1.98.0':
     resolution: {integrity: sha512-+KuiWhpbKBaG2egF+51KjbGWatTH5BbmWQjSLMDCssb4xF8FJnW4nGH4nuAdOOfMbpD0QlHtI+C3tPq+DoKElg==}
@@ -1123,13 +1123,13 @@ snapshots:
 
   '@tsconfig/node-lts@22.0.1': {}
 
-  '@tsconfig/node-ts@23.6.0': {}
+  '@tsconfig/node-ts@23.6.1': {}
 
   '@tsconfig/strictest@2.0.5': {}
 
   '@types/mocha@10.0.10': {}
 
-  '@types/node@22.13.11':
+  '@types/node@22.13.12':
     dependencies:
       undici-types: 6.20.0
 

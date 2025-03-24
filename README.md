@@ -16,7 +16,7 @@ wasm fmt is a multi-language code formatting tool with the following advantages:
 
 ## Supported languages
 
-- [ruff_fmt](https://github.com/wasm-fmt/ruff_fmt)
+- [python-fmt](https://github.com/wasm-fmt/ruff_fmt)
 
   - [x] Python
 
@@ -24,7 +24,7 @@ wasm fmt is a multi-language code formatting tool with the following advantages:
 
   - [x] Golang
 
-- [web_fmt](https://github.com/wasm-fmt/web_fmt)
+- [web-fmt](https://github.com/wasm-fmt/web_fmt)
 
   - [x] JavaScript / TypeScript / JSX / TSX
   - [x] JSON / JSONC
@@ -37,28 +37,24 @@ wasm fmt is a multi-language code formatting tool with the following advantages:
   - [x] Objective-C / Objective-C++
   - [x] C#
   - [x] Java
-  - [ ] JavaScript / TypeScript [^1]
-  - [ ] JSON / JSONC [^1]
   - [x] Protobuf
 
-- [dart_fmt](https://github.com/wasm-fmt/dart_fmt)
+- [dart-fmt](https://github.com/wasm-fmt/dart_fmt)
 
   - [x] Dart
 
-- [zig_fmt](https://github.com/wasm-fmt/zig_fmt)
+- [zig-fmt](https://github.com/wasm-fmt/zig_fmt)
 
   - [x] Zig
 
-- [lua_fmt](https://github.com/wasm-fmt/lua_fmt)
+- [lua-fmt](https://github.com/wasm-fmt/lua_fmt)
 
   - [x] Lua
 
-- [sql_fmt](https://github.com/wasm-fmt/sql_fmt)
+- [sql-fmt](https://github.com/wasm-fmt/sql_fmt)
 
   - [x] SQL
 
 - [yamlfmt](https://github.com/wasm-fmt/yamlfmt)
   - [x] YAML
   - [x] GitHub Actions Workflow
-
-[^1]: JavaScript / TypeScrip / JSON / JSONC are supported by clang-format as well, but web_fmt is used for better output.
